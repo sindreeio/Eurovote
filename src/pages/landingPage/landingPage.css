@@ -1,0 +1,57 @@
+.Logo {
+    padding-top: 50px;
+    font-weight: bold;
+    display: block;
+    margin: auto;
+    width: fit-content;
+    font-size: 50px;
+    text-align: center;
+    color: white;
+    height: fit-content;
+}
+
+
+.main_container{
+ height: 100vh;
+ width: 100%;
+ display: flex;
+ flex-direction: row;
+ justify-content: center;
+ flex-wrap: wrap;
+ 
+ 
+}
+
+.subheader{
+    margin-top: 20px;
+    font-size: 50px;
+    color: white;
+
+}
+
+.join_button{
+    margin-top: 20px;
+}
+
+.input_container {
+    height: fit-content;
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.input_margin{
+    padding-top:  0px ;
+}
+
+.new_group_button{
+    margin-top: auto;
+    margin-bottom: 60px;
+}
+
+.message_code{
+    font-size: 12px;
+    color: #ddd;
+    width: fit-content;
+    margin: auto;
+}

@@ -1,0 +1,36 @@
+
+@keyframes colors{
+  0% {background-position: 50% 0%;}
+  50% {background-position: 50% 98%;}
+  100% {background-position: 50% 0%;}
+}
+
+
+body {
+  margin: 0;
+  font-family: 'Exo', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  width: 98vw;
+  height: 98vh;
+  background: 
+  linear-gradient(#120139, #935496);
+  background-size: 300% 400%;
+  animation: colors;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-appearance: none;
+  -webkit-user-select: none; 
+  outline:none;
+  user-select: none;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
