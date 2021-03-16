@@ -36,6 +36,17 @@ function LandingPage() {
     function submit() {
         console.log(username);
         setRedirectToVote(true);
+        const init_numbers = {"song":0, "performance":0, "show":0, "factor":0, "costume":0}
+        const userRef = db.collection("users").doc(id).collection(username);
+        userRef.get().then((collection)=> {
+            if (collection.docs.length == 0){
+                db.collection("countries").orderBy("turn").get().then((countries)=>{
+                    countries.forEach((country) =>{
+                        userRef.doc(country.id).set(init_numbers);
+                    });
+                })
+            }
+        })
 
     }
 

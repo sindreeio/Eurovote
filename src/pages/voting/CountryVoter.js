@@ -2,66 +2,69 @@ import React, { useEffect, useState } from 'react';
 import { firebaseAuth, db } from '../../database/config';
 import '../landingPage/landingPage.css';
 import Slider from '../../components/sliders/materialDesignSlider';
-import { MDCSlider } from '@material/slider';
 import './voting.css';
 
 function CountryVoter(props) {
-    const [flag, setFlag] = useState('');
-    const [name, setName] = useState("");
-    const [userName, setUserName] = useState(props.username);
-
-    useEffect(()=>{
-        try{
-            db.collection("countries").doc(props.countryId).get().then((country)=>{
-                if (country.exists){
-                    setFlag(country.data().flag);
-                    setName(country.data().name);
-                }
-
-            })
-        }
-        catch{
-            console.log("error");
-        }
-
-    },)
+    const [score, setScore] = useState(1);
+    const [songScore, setSongScore] = useState(null);
+    const [performanceScore, setPerformanceScore] = useState(null);
+    const [showScore, setShowScore] = useState(0);
+    const [costumeScore, setCostumeScore] = useState(0);
+    const [factorScore, setFactorScore] = useState(0)
+    
+    
+    const setVoteForCountry = (score, category)=>{
+        
+        db.collection("users").doc(props.adminId).collection(props.username).doc(props.countryId).set({[category]:score}, {merge:true});
+    }
 
 
+    console.log(props.countryId);
+    useEffect(() => {
+        db.collection("users").doc(props.adminId).collection(props.username).doc(props.countryId).onSnapshot((data) => {
+            if (data.data()){
+                setSongScore(data.data().song);
+                setPerformanceScore(data.data().performance);
+                setShowScore(data.data().show)
+                setCostumeScore(data.data().costume);
+                setFactorScore(data.data().factor);
+            }
+        })
+    }, [props.countryId])
+    
     return(
-            <div className="votingcontainer">
-                <div className="header">{String.fromCharCode(flag[0],flag[1],flag[2],flag[3])} {name}</div>
-                <div className="slidercontainer" >
-                    <div className="text">Sang:</div>
-                    <div className="slider">
-                        <Slider id={"song"}/>
-                    </div>
-                </div>
-                <div className="slidercontainer">
-                    <div className="text">Framføring:</div>
-                    <div className="slider">
-                        <Slider id={"performance"}/>
-                    </div>
-                </div>
-                <div className="slidercontainer">
-                    <div className="text">Sceneshow:</div>
-                    <div className="slider">
-                        <Slider id={"show"}/>
-                    </div>
-                </div>
-                <div className="slidercontainer">
-                    <div className="text">Kostyme:</div>
-                    <div className="slider">
-                        <Slider id={"costume"}/>
-                    </div>
-                </div>
-                <div className="slidercontainer">
-                    <div className="text">Eurovisionfaktor:</div>
-                    <div className="slider">
-                        <Slider id={"factor"}/>
-                    </div>
+        <div>
+            <div className="slidercontainer" >
+                <div className="text">Sang:</div>
+                <div className="slider">
+                    <Slider action={setVoteForCountry}  id={"song"}  value={songScore}/>
                 </div>
             </div>
-
+            <div className="slidercontainer">
+                <div className="text">Framføring:</div>
+                <div className="slider">
+                    <Slider action={setVoteForCountry} id={"performance"} value={performanceScore}/>
+                </div>
+            </div>
+            <div className="slidercontainer">
+                <div className="text">Sceneshow:</div>
+                <div className="slider">
+                    <Slider action={setVoteForCountry} id={"show"} value={showScore}/>
+                </div>
+            </div>
+            <div className="slidercontainer">
+                <div className="text">Kostyme:</div>
+                <div className="slider">
+                    <Slider action={setVoteForCountry} id={"costume"} value={costumeScore}/>
+                </div>
+            </div>
+            <div className="slidercontainer">
+                <div className="text">Eurovisionfaktor:</div>
+                <div className="slider">
+                    <Slider action={setVoteForCountry} id={"factor"} value={factorScore}/>
+                </div>
+            </div>
+        </div>
     )
 }
 

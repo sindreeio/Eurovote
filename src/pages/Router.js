@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch} from "react-router-dom";
 import LandingPage from './landingPage/landingPage.js';
 import Login from './authentication/login';
 import Register from './authentication/register';
-import Countrylist from '../pages/voting/CountryList';
+import VotingPage from './voting/VotingPage';
 import App from '../App';
 
 function Router(){
@@ -20,7 +20,7 @@ function Router(){
                     <Register/>
                 </Route>
                 <Route exact path="/vote/:username/:adminId">
-                    <Countrylist/>
+                    <VotingPage/>
                 </Route>
                 <Route exact path="/app">
                     <App/>
