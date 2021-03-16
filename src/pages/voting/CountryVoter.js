@@ -14,14 +14,32 @@ function CountryVoter(props) {
     
     
     const setVoteForCountry = (score, category)=>{
-        
         db.collection("users").doc(props.adminId).collection(props.username).doc(props.countryId).set({[category]:score}, {merge:true});
+        switch (category) {
+            case "song":
+                setSongScore(score);
+                break;
+            case "performance":
+                setPerformanceScore(score);
+                break;
+            case "show":
+                setShowScore(score);
+                break;
+            case "costume":
+                setCostumeScore(score);
+                break;
+            case "factor":
+                setFactorScore(score);
+                break;
+            default:
+                break;
+        }
     }
 
 
     console.log(props.countryId);
     useEffect(() => {
-        db.collection("users").doc(props.adminId).collection(props.username).doc(props.countryId).onSnapshot((data) => {
+        db.collection("users").doc(props.adminId).collection(props.username).doc(props.countryId).get().then((data) => {
             if (data.data()){
                 setSongScore(data.data().song);
                 setPerformanceScore(data.data().performance);
