@@ -1,15 +1,16 @@
 .votingDiv{
-    height: fit-content;
+    height: 100%;
 }
+
 
 .votingcontainer{
     height: fit-content;
     width: 100vw;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
         
         
 }
@@ -17,7 +18,7 @@
 .header{
     display: block;
     margin-top: 10px;
-    padding-bottom: 30px;
+    padding-bottom: 25px;
     font-weight: bold;
     font-size: 40px;
     color: white;
@@ -42,4 +43,42 @@
 
 .hide {
     display: none;
+}
+
+.bottom_bar {
+    position: fixed;
+    bottom: 0px;
+    height: 60px;
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.total_score {
+    width: 25%;
+    text-align: left;
+    font-size: 20px;
+    color: white;
+}
+
+.reaction_bar{
+    width: 75%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.reaction{
+    width: 25%;
+    font-size: 20px;
+    text-align: center;
+}
+
+.reaction:active{
+    font-size: 30px;
 }

@@ -13,6 +13,7 @@ import 'swiper/components/navigation/navigation.scss';
 SwiperCore.use([Pagination, Virtual, Navigation]);
 
 function CountryList(props) {
+    const [score, setScore] = useState(0);
     const [countries, setCountries] = useState([]);
     const [countryIds, setCountryIds] = useState([]);
     const [index,setIndex] = useState(0)
@@ -50,8 +51,16 @@ function CountryList(props) {
             null
         }
         <div className="votingcontainer">
-            <Countryvoter countryId={countryIds[index]} adminId={props.adminId} username={props.username}/>
+            <Countryvoter countryId={countryIds[index]} adminId={props.adminId} username={props.username} score={setScore}/>
         </div>   
+        <div className="bottom_bar">
+            <div className="total_score">Totalt: {score}</div>
+            <div className="reaction_bar">
+                <div className="reaction">❤️</div>
+                <div className="reaction">😂</div>
+                <div className="reaction">🥳</div>
+            </div>
+        </div>
         </div>
     )
 }

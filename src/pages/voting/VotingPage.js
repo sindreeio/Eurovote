@@ -31,7 +31,7 @@ function VotingPage(prop){
 
     },[])
     return(
-        <div>
+        <div style={{height: "100vh"}}>
             {myCountries ? <Countrylist countries={myCountries} countryIds={countryIds} adminId={adminId} username={username}/>: null}
         </div>
     )
