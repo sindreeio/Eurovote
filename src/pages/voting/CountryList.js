@@ -53,7 +53,7 @@ function CountryList(props) {
         <div className="votingcontainer">
             <Countryvoter countryId={countryIds[index]} adminId={props.adminId} username={props.username} score={setScore}/>
         </div>
-        <div className="bottom_bar">
+        <div className="vote_bottom_bar">
             <div className="total_score">Totalt: {score}</div>
             <div className="reaction_bar">
                 <div className="reaction">❤️</div>

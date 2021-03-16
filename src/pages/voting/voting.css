@@ -45,7 +45,7 @@
     display: none;
 }
 
-.bottom_bar {
+.vote_bottom_bar {
     position: fixed;
     bottom: 0px;
     height: 60px;
