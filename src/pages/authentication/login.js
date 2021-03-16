@@ -6,7 +6,6 @@ import Inputfield from '../../components/inputfields/MaterialDesignField';
 import {Redirect, Link} from 'react-router-dom';
 
 
-
 function Login(){
     const [doRedirectToGroups, setRedirectToGroups]= useState(false);
     const [email, setEmail] = useState("");
@@ -42,7 +41,7 @@ function Login(){
     return(
         
         <div className="main_container">
-            {doRedirectToGroups ? <Redirect to="/groups"/> : null}
+            {doRedirectToGroups ? <Redirect to="/host"/> : null}
             <div className="Logo">Eurovote</div>
                 <div style={{width:"100%"}}>
                     <div className="input_container input_margin">

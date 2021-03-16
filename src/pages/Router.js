@@ -5,6 +5,7 @@ import Login from './authentication/login';
 import Register from './authentication/register';
 import VotingPage from './voting/VotingPage';
 import App from '../App';
+import HostPage from "./host/hostPage.js";
 
 function Router(){
     return(
@@ -18,6 +19,9 @@ function Router(){
                 </Route>
                 <Route exact path="/registrer">
                     <Register/>
+                </Route>
+                <Route exact path="/host">
+                    <HostPage/>
                 </Route>
                 <Route exact path="/vote/:username/:adminId">
                     <VotingPage/>

@@ -82,7 +82,7 @@ const submit = () =>{
     return(
 
         <div className="main_container">
-            {doRedirectToFeed ? <Redirect to="/groups"/> : null}
+            {doRedirectToFeed ? <Redirect to="/host"/> : null}
             <div className="Logo">Eurovote</div>
                 <div style={{width:"100%"}}>
                     <div className="input_container ">
