@@ -4,7 +4,7 @@ import NormalButton from '../../components/buttons/normalButton.js';
 import Inputfield from '../../components/inputfields/MaterialDesignField';
 import UserName from './userName.js';
 import { Link, Redirect } from "react-router-dom";
-import { firebaseAuth, db } from '../../database/config';
+import { db } from '../../database/config';
 
 
 function LandingPage() {
@@ -37,17 +37,18 @@ function LandingPage() {
         console.log(username);
         setRedirectToVote(true);
         const init_numbers = {"song":0, "performance":0, "show":0, "factor":0, "costume":0}
-        const userRef = db.collection("users").doc(id).collection(username);
-        userRef.get().then((collection)=> {
-            if (collection.docs.length == 0){
-                db.collection("countries").orderBy("turn").get().then((countries)=>{
-                    countries.forEach((country) =>{
-                        userRef.doc(country.id).set(init_numbers);
-                    });
-                })
-            }
+        db.collection("users").doc(id).collection("users").doc(username).set({"name":username, "time": Date.now()}).then(()=>{
+            const userRef = db.collection("users").doc(id).collection("users").doc(username).collection("countries");
+            userRef.get().then((collection)=> {
+                if (collection.docs.length == 0){
+                    db.collection("countries").orderBy("turn").get().then((countries)=>{
+                        countries.forEach((country) =>{
+                            userRef.doc(country.id).set(init_numbers);
+                        });
+                    })
+                }
+            })
         })
-
     }
 
     return(

@@ -33,7 +33,9 @@ function CountryList(props) {
         ));
         
     }
-
+    const sendReaction = (name) => {
+        db.collection("users").doc(props.adminId).collection("reactions").doc("reaction").set({"name": name, "time": Date.now()});
+    }
     
     return(
         <div className="votingDiv">
@@ -56,9 +58,10 @@ function CountryList(props) {
         <div className="vote_bottom_bar">
             <div className="total_score">Totalt: {score}</div>
             <div className="reaction_bar">
-                <div className="reaction">❤️</div>
-                <div className="reaction">😂</div>
-                <div className="reaction">🥳</div>
+                <div className="reaction" onClick={() => sendReaction("heart")}>❤️</div>
+                <div className="reaction" onClick={() => sendReaction("lol")}>😂</div>
+                <div className="reaction" onClick={() => sendReaction("party")}>🥳</div>
+                <div className="reaction" onClick={() => sendReaction("vomit")}>🤮</div>
             </div>
         </div>
         </div>

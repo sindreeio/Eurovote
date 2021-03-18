@@ -16,49 +16,126 @@
 
 }
 
-.content{
+.host_content{
     height: 100vh;
     width: 100vw;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
+    background: #935496;
 }
 
-.bottom_bar{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    z-index: 3;
-    opacity: 0;
-}
-
-.bottom_bar_box {
+.top_menu{
+    position: fixed;
+    top: 0px;
+    left: 0px;
     width: 20%;
-    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items:flex-start;
+    z-index: 50;
+    opacity: 0.9;
+    background-color: #333;
+    border-radius: 0 0 10px 0;
+}
+
+.top_menu_box {
+    width: 100%;
+    font-size: 2vw;
     color: white;
-    text-align: center;
-    cursor: pointer;
-    padding: 2px 0 2px 0;
+    text-align: left;
+    padding: 10px;
     
 }
 
-.bottom_bar:hover {
-    opacity: 1.0;
-    background-color: #333;
+.top_menu_icon {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 30px;
+    width: 30px;
+    padding: 30px;
+    opacity: 0.7;
+    z-index: 50;
 }
 
-.overlay{
+
+.nrk_options{
     position: fixed;
     top:0;
     left: 0;
     width: 100vw;
     height: 56.25vw;
-    background-color: gray;
-    opacity: 0.1;
+    opacity: 0;
     z-index: 2;
 
+}
+
+.host_info_container {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    top: 0;
+    width: 100%;
+    z-index: 4;
+}
+
+.result_list_box {
+    position: fixed;
+    top:0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    width: 20vw;
+    height: auto;
+    z-index: 5;
+    font-size: 2vw;
+    color: white;
+    padding: 10px;
+    background-color: rgba(48, 48, 48, 0.2);
+    border-radius: 10px 0 0 10px;
+    margin-top: 10vh;
+}
+
+.host_info_container_column {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 100vh;
+    width: fit-content;
+}
+.game_code_box{
+    width: fit-content;
+    font-size: 4vw;
+    color: white;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 0 0 10px 10px;
+    opacity: 0.9;
+}
+
+.users_list_box {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 50vw;
+    max-height: 70vh;
+    overflow-x: hidden;
+    background-color: #333;
+    border-radius: 10px;
+    opacity: 0.9;
+    font-size: 2.5vw;
+    color: white;
+    padding: 10px;
+    margin-top: 20px;
+    text-align: center;
 }
 
 html::-webkit-scrollbar {
@@ -68,4 +145,25 @@ html::-webkit-scrollbar {
 html {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;
+}
+
+.result_list_row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: fit-content;
+    width: 100%;
+}
+
+.result_list_name{
+    margin-left: 0;
+    margin-right: auto;
+}
+.result_list_score{
+    margin-right: 0;
+    margin-left: auto;
+}
+
+.close_button{
+    cursor: pointer;
 }

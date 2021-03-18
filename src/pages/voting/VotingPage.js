@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { firebaseAuth, db } from '../../database/config';
-import Countryvoter from './CountryVoter';
+import { db } from '../../database/config';
 import Countrylist from './CountryList';
-import{Swiper, SwiperSlide} from 'swiper/react'
 import SwiperCore, {Pagination, Virtual} from 'swiper';
 import '../landingPage/landingPage.css';
 import './voting.css';

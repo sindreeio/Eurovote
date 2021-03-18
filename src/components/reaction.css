@@ -1,0 +1,27 @@
+.reaction_animation {
+    position: absolute;
+    padding-top:0px;
+    margin-bottom:0px;
+    animation-duration: 3s;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in;
+    z-index: 100;
+    font-size: 4vw;
+    
+ }
+
+ 
+ @keyframes fadeOutUp {
+    0% {
+       opacity: 1;
+       transform: translateY(0);
+    }
+    100% {
+       opacity: 0;
+       transform: translateY(-70vh);
+    }
+ }
+ 
+ .fadeOutUp {
+    animation-name: fadeOutUp;
+ }

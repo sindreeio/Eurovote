@@ -4,14 +4,16 @@ import {Redirect, Link} from 'react-router-dom';
 import Overlay from './overlay.js';
 import './hostPage.css';
 
+
 function HostPage(){
     const [doRedirectToLogin, setRedirectToLogin] = useState(false);
     const [showNRK, setShowNRK] = useState(true);
-    const [uid, setUid] = useState()
+    const [uid, setUid] = useState();
+    
     useEffect(()=>{
         firebaseAuth.onAuthStateChanged((user)=>{
             if (user){
-                setUid(user.id);
+                setUid(user.uid);
             }
             else{
                 setRedirectToLogin(true);
@@ -22,12 +24,12 @@ function HostPage(){
 
 
     return(
-        <div className="content">
+        <div className="host_content">
             {doRedirectToLogin ? <Redirect to="/"/> : null}
             {showNRK ? <div className="iframe_container">
                 <iframe src="https://www.nrk.no/embed/PS*NRK1?autoplay=true" title="NRK" className="iframe" scrolling="yes"></iframe>
             </div> : null}
-            <Overlay setNrk={setShowNRK} nrk={showNRK}/>
+            <Overlay setNrk={setShowNRK} nrk={showNRK} adminId={uid}/>
         </div>
     )
 }
