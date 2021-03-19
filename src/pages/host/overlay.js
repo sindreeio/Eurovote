@@ -22,7 +22,8 @@ function Overlay(props) {
     const [resultList, setResultList] = useState("(Ingen stemmer gitt)");
     const [showResultList, setShowResultList] = useState(false);
     const [flags, setFlags] = useState();
-    const [results, setResults] = useState([]);
+    const [newResults, setNewResults] = useState();
+    const [usernames, setUsernames] = useState([])
 
     useEffect(() => {
         if (Date.now() - oldTime > 5000) {
@@ -76,66 +77,82 @@ function Overlay(props) {
             })
             setFlags(flagList);
         })
+        db.collection("users").doc(props.adminId).get().then((doc)=>{
+            if (doc.data()) {
+                setActiveVoting(doc.data().canVote)
+            }
+        })
+
     }, [props.adminId])
 
+     const getResults = async () =>{
+         let resultsLists ={};
+         console.log(usernames)
+        var promises = usernames.map( async (us) =>{
+          await  db.collection("users").doc(props.adminId).collection("users").doc(us).collection("countries").get().then((countries)=>{
+                countries.forEach((country)=>{
+                    let data = country.data();
+                    let total_score = data.factor + data.costume + data.show + data.performance +data.song
+                    if(resultsLists[country.id]){
+                        resultsLists[country.id] = resultsLists[country.id] + total_score
+                    }
+                    else{
+                        resultsLists[country.id] = total_score;
+                    }
+                })
+            })
+        })
+        await Promise.all(promises);
+        console.log(JSON.stringify(resultsLists));
+        let resultJSX =[];
+        var resultlist = Object.keys(resultsLists).map((key)=>{
+            return [key, resultsLists[key]]
+        })
+        resultlist.sort(function(first, second) {
+            return second[1] - first[1];
+        });
+        console.log(resultlist)
+        resultlist.forEach((cou)=>{
+            var flag = [];
+            if (flags) {
+                flag = flags[cou[0]];
+            };
+            resultJSX.push(
+                <div key={cou[0]} className="result_list_row">
+                    {flag.length === 4 ? <div>{String.fromCharCode(flag[0],flag[1],flag[2],flag[3])}</div>: null}
+                    <div className="result_list_name">{cou[0]}</div>
+                    <div className="result_list_score">{cou[1]}</div>
+                </div>
+            )
+        })
+        setResultList(resultJSX);
+        return resultsLists;
+       
+    }
     
     useEffect(() => {
         const unsubscribe = db.collection("users").doc(props.adminId).collection("users").onSnapshot((snapshot) => {
-            let users = [];                
-            let resultsLists = {};
+            let users = [];
+            let usernames = []                
 
-            console.log("kjører")
             snapshot.forEach(element => {
+                usernames.push(element.id)
                 users.push(<div>{element.id}</div>);
-                element.ref.collection("countries").get().then((countries)=>{
-                    countries.forEach((country)=>{
-                        let data = country.data();
-                        let total_score = data.factor + data.costume + data.show + data.performance +data.song
-                        if(resultsLists[country.id]){
-                            resultsLists[country.id] = resultsLists[country.id] + total_score
-                        }
-                        else{
-                            resultsLists[country.id] = total_score;
-                        }
-                    })
-                })
-                .then(()=>{
-                    let resultJSX =[];
-                    var resultlist = Object.keys(resultsLists).map((key)=>{
-                        return [key, resultsLists[key]]
-                    })
-                    resultlist.sort(function(first, second) {
-                        return second[1] - first[1];
-                    });
-                    resultlist.forEach((cou)=>{
-                        var flag = [];
-                        if (flags) {
-                            flag = flags[cou[0]];
-                        };
-                        resultJSX.push(
-                            <div key={cou[0]} className="result_list_row">
-                                {flag.length === 4 ? <div>{String.fromCharCode(flag[0],flag[1],flag[2],flag[3])}</div>: null}
-                                <div className="result_list_name">{cou[0]}</div>
-                                <div className="result_list_score">{cou[1]}</div>
-                            </div>
-                        )
-                    })
-                    setResultList(resultJSX);
-                })
-            
+                
             })
-            console.log("Hallo??");
-            setUsers(users); 
+            
 
-        
-        });
+            setUsers(users);
+            setUsernames(usernames);
+            setNewResults(Date.now());
+        })
         return () => unsubscribe()
     
     }, [props.adminId, flags])
 
     useEffect(()=> {
-
-    },[results])
+        getResults()
+    },[newResults])
 
     return(
         <div>
