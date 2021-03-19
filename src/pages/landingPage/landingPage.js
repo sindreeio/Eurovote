@@ -23,23 +23,19 @@ function LandingPage() {
                     if(parseInt(code) === usr.data().pin) {
                         setShowUsername(true);
                         setId(usr.id);
-                        console.log("Correct pin");
                     }
                 })
             });
             if(!showUsername) {
-                console.log("Wrong pin!");
             }
         }
     }
 
     function submit() {
-        console.log(username);
-        var username_trim = username.trim()
         setRedirectToVote(true);
         const init_numbers = {"song":0, "performance":0, "show":0, "factor":0, "costume":0}
-        db.collection("users").doc(id).collection("users").doc(username_trim).set({"name":username_trim, "time": Date.now()}).then(()=>{
-            const userRef = db.collection("users").doc(id).collection("users").doc(username_trim).collection("countries");
+        db.collection("users").doc(id).collection("users").doc(username).set({"name":username, "time": Date.now()}).then(()=>{
+            const userRef = db.collection("users").doc(id).collection("users").doc(username).collection("countries");
             userRef.get().then((collection)=> {
                 if (collection.docs.length == 0){
                     db.collection("countries").orderBy("turn").get().then((countries)=>{
