@@ -1,40 +1,25 @@
-import React, { useCallback, useEffect, useState }  from 'react';
-import {db, firebaseAuth} from '../../database/config.js';
-import {Redirect, Link} from 'react-router-dom';
+import React, {useEffect, useState }  from 'react';
+import {db} from '../../database/config.js';
 import './hostPage.css';
-import Reaction from '../../components/reaction';
 import MaterialUIswitch from '../../components/switches/materialUIswitch'
 import Menu from '../../components/assets/menu-white-18dp.svg';
 import Close from '../../components/assets/close-white-18dp.svg';
+import {useGameCode, useFlags, useUsers, useLatestReaction, useEmojis} from '../../hooks/hostHooks';
 
 function Overlay(props) {
     const [activateNRKCon, setActivateNRKCon] = useState(false);
-    const [emojis, setEmojis] = useState([]);
-    const [time, setTime] = useState(0);
-    const [oldTime, setOldTime] = useState(0);
-    const [myName, setMyName] = useState("lol");
+    const {myName, time} = useLatestReaction(props.adminId)
+    const emojis = useEmojis(time, myName);
     const [topMenu, setTopMenu] = useState(true);
-    const [gameCode,setGameCode] = useState(false);
+    const gameCode = useGameCode(props.adminId)
     const [showGameCode, setShowGameCode] = useState(true);
     const [activeVoting, setActiveVoting] = useState(false);
-    const [users, setUsers] = useState([]);
     const [showUsers, setShowUsers] = useState(true);
     const [resultList, setResultList] = useState("(Ingen stemmer gitt)");
     const [showResultList, setShowResultList] = useState(false);
-    const [flags, setFlags] = useState();
-    const [newResults, setNewResults] = useState();
-    const [usernames, setUsernames] = useState([])
+    var flags = useFlags(props.adminId);
+    const {users, usernames, newResults} = useUsers(props.adminId, flags);
 
-    useEffect(() => {
-        if (Date.now() - oldTime > 5000) {
-            setEmojis([<Reaction key={time} name={myName} />]);
-        } else {
-            setEmojis([...emojis, <Reaction key={time} name={myName}/>]);
-        }
-        setOldTime(Date.now());
-        
-
-    },[time])
 
 
     const changeVotingStatus = () =>{
@@ -50,33 +35,7 @@ function Overlay(props) {
         
         
     }
-
-    useEffect(() => {
-        const unsubscribe = db.collection("users").doc(props.adminId).collection("reactions").doc("reaction").onSnapshot((snapshot) => {
-            if (snapshot.data()) {
-                setMyName(snapshot.data().name);
-                setTime(snapshot.data().time);                
-            }
-        });
-        return () => unsubscribe()
-    }, [props.adminId]);
-
-    useEffect(() => {
-        db.collection("users").doc(props.adminId).get().then((doc) => {
-            if (doc.data()) {
-                setGameCode(doc.data().pin);
-            }
-        })
-    }, [props.adminId])
-
     useEffect(()=>{
-        db.collection("countries").get().then((countries)=>{
-            var flagList = {}
-            countries.forEach((country)=>{
-                flagList[country.id] = country.data().flag;
-            })
-            setFlags(flagList);
-        })
         db.collection("users").doc(props.adminId).get().then((doc)=>{
             if (doc.data()) {
                 setActiveVoting(doc.data().canVote)
@@ -87,7 +46,6 @@ function Overlay(props) {
 
      const getResults = async () =>{
          let resultsLists ={};
-         console.log(usernames)
         var promises = usernames.map( async (us) =>{
           await  db.collection("users").doc(props.adminId).collection("users").doc(us).collection("countries").get().then((countries)=>{
                 countries.forEach((country)=>{
@@ -103,7 +61,7 @@ function Overlay(props) {
             })
         })
         await Promise.all(promises);
-        console.log(JSON.stringify(resultsLists));
+       // console.log(JSON.stringify(resultsLists));
         let resultJSX =[];
         var resultlist = Object.keys(resultsLists).map((key)=>{
             return [key, resultsLists[key]]
@@ -111,7 +69,6 @@ function Overlay(props) {
         resultlist.sort(function(first, second) {
             return second[1] - first[1];
         });
-        console.log(resultlist)
         resultlist.forEach((cou)=>{
             var flag = [];
             if (flags) {
@@ -129,26 +86,7 @@ function Overlay(props) {
         return resultsLists;
        
     }
-    
-    useEffect(() => {
-        const unsubscribe = db.collection("users").doc(props.adminId).collection("users").onSnapshot((snapshot) => {
-            let users = [];
-            let usernames = []                
 
-            snapshot.forEach(element => {
-                usernames.push(element.id)
-                users.push(<div>{element.id}</div>);
-                
-            })
-            
-
-            setUsers(users);
-            setUsernames(usernames);
-            setNewResults(Date.now());
-        })
-        return () => unsubscribe()
-    
-    }, [props.adminId, flags])
 
     useEffect(()=> {
         getResults()

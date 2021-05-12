@@ -13,7 +13,7 @@ function MaterialDesignField(props){
         <label className="mdc-text-field mdc-text-field--filled" id={props.id}>
         <span className="mdc-text-field__ripple"></span>
         <span className="mdc-floating-label" id="my-label-id">{props.label}</span>
-        <input className="mdc-text-field__input" onChange={(text) => props.setFunction(text.target.value.trim(" "))} type={props.type} aria-labelledby="my-label-id"/>
+        <input className="mdc-text-field__input" onChange={(text) => props.setFunction(text.target.value.trim())} type={props.type} aria-labelledby="my-label-id"/>
         <span className="mdc-line-ripple"></span>
     </label>
     )
