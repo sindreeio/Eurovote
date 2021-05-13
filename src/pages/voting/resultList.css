@@ -1,0 +1,21 @@
+.result_list_background {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 5;
+
+}
+
+.result_list_container {
+    width: 80%;
+    height: 80%;
+    background-color: rgb(205, 55, 168);
+    color: white;
+    font-size: 20px;
+    
+}
