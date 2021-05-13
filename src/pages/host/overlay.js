@@ -1,7 +1,9 @@
 import React, {useEffect, useState }  from 'react';
 import {db} from '../../database/config.js';
+import {Redirect, Link} from 'react-router-dom';
 import './hostPage.css';
 import MaterialUIswitch from '../../components/switches/materialUIswitch'
+import NormalButton from '../../components/buttons/normalButton.js';
 import Menu from '../../components/assets/menu-white-18dp.svg';
 import Close from '../../components/assets/close-white-18dp.svg';
 import {useGameCode, useFlags, useUsers, useLatestReaction, useEmojis} from '../../hooks/hostHooks';
@@ -96,14 +98,19 @@ function Overlay(props) {
         <div>
             { activateNRKCon ? <div className="nrk_options"></div> : null}
             {topMenu ? <div className="top_menu">
-                <div className="top_menu_box close_button" onClick={() => setTopMenu(false)}><img src={Close}></img></div>
+                <div className="top_menu_box close_button" onClick={() => setTopMenu(false)}><img src={Close} alt="close"></img></div>
                 <div className="top_menu_box"><MaterialUIswitch label={"Vis NRK"} default={props.nrk} action={props.setNrk}/></div>
                 <div className="top_menu_box" ><MaterialUIswitch label={"Skjul NRK kontrollere"} default={activateNRKCon} action={setActivateNRKCon}/></div>
                 <div className="top_menu_box"><MaterialUIswitch label={"Vis Spillkode"} default={showGameCode} action={setShowGameCode}/></div>
                 <div className="top_menu_box"><MaterialUIswitch label={"Vis brukere"} default={showUsers} action={setShowUsers}/></div>
                 <div className="top_menu_box"><MaterialUIswitch label={"Tillat stemming"} default={activeVoting} action={changeVotingStatus}/></div>
                 <div className="top_menu_box"><MaterialUIswitch label={"Vis resultatliste"} default={showResultList} action={setShowResultList}/></div>
-            </div> : <div className="top_menu_icon" onClick={() => setTopMenu(true)}><img src={Menu}></img></div>}
+                <div className="top_menu_box">
+                        <Link to={'/results'}>
+                            <NormalButton name="Gå til resultater"></NormalButton>
+                        </Link>
+                    </div>
+            </div> : <div className="top_menu_icon" onClick={() => setTopMenu(true)}><img src={Menu} alt="menu"></img></div>}
             <div className="host_info_container">
                     {showGameCode ? <div className="game_code_box">
                         Kode: {gameCode}
