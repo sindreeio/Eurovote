@@ -1,3 +1,14 @@
+.result_page_header {
+    display: block;
+    text-align: center;
+    height: auto;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+    color: white;
+    font-size: 5vw;
+    
+}
+
 .result_page_container {
     width: 100vw;
     height: 100%;
@@ -10,7 +21,7 @@
 .result_page_list {
     width: 15vw;
     min-height: auto;
-    max-height: 95vh;
+    max-height: 90vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -48,4 +59,13 @@
 .result_page_score {
     margin-right: 0;
     margin-left: auto;
+}
+
+.result_page_back_button {
+    display: flex;
+    width: 100vw;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    margin-top: 5vh;
 }

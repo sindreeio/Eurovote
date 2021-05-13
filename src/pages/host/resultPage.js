@@ -4,6 +4,7 @@ import './resultPage.css';
 import {useFlags, useUsers} from '../../hooks/hostHooks';
 import useUserId from '../../hooks/authentication';
 import {Redirect, Link} from 'react-router-dom';
+import NormalButton from '../../components/buttons/normalButton.js';
 
 function ResultPage(props) {
     var uid = useUserId();
@@ -43,9 +44,7 @@ function ResultPage(props) {
             if (categories[cat] === "Totalt"){
                 resultlist.forEach((country) => {
                     country[1] = country[1].reduce((a, b) => a + b, 0);
-                    console.log(country[1])
                 })
-                // eslint-disable-next-line no-loop-func
                 resultlist.sort(function(first, second) {
                     return second[1] - first[1];
                 });
@@ -72,7 +71,6 @@ function ResultPage(props) {
             })
             resultTables.push(<div className="result_page_list">{resultJSX}</div>)
         }
-        console.log(resultlist)
         setResultList(resultTables);
         return resultsLists;
       
@@ -85,7 +83,17 @@ function ResultPage(props) {
     }, [usernames.length])
 
     return(
-        <div className="result_page_container">{resultList}</div>
+        <div>
+            <div className="result_page_header">Resultater</div>
+            <div className="result_page_container">{resultList}</div>
+            <div className="result_page_back_button">
+                <div>
+                    <Link to={'/host'}>
+                        <NormalButton name="Gå til tilbake"></NormalButton>
+                    </Link>
+                </div>
+            </div>
+        </div>
     )
 
    
