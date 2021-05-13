@@ -4,6 +4,7 @@ import LandingPage from './landingPage/landingPage.js';
 import Login from './authentication/login';
 import Register from './authentication/register';
 import VotingPage from './voting/VotingPage';
+import ResultPage from './host/resultPage.js'
 import App from '../App';
 import HostPage from "./host/hostPage.js";
 
@@ -28,6 +29,9 @@ function Router(){
                 </Route>
                 <Route exact path="/app">
                     <App/>
+                </Route>
+                <Route exact path="/results">
+                    <ResultPage/>
                 </Route>
             </Switch>
         </BrowserRouter>
