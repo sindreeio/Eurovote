@@ -89,7 +89,7 @@ function ResultPage(props) {
             <div className="result_page_back_button">
                 <div>
                     <Link to={'/host'}>
-                        <NormalButton name="Gå til tilbake"></NormalButton>
+                        <NormalButton name="Gå tilbake"></NormalButton>
                     </Link>
                 </div>
             </div>
