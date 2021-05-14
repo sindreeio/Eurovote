@@ -3,11 +3,16 @@
     font-weight: bold;
     display: block;
     margin: auto;
-    width: fit-content;
+    width: 80vw;
+    max-width: 500px;
     font-size: 50px;
     text-align: center;
     color: white;
     height: fit-content;
+}
+
+.Logo_img{
+    width: 100%;
 }
 
 

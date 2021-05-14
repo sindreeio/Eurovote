@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './landingPage.css';
 import NormalButton from '../../components/buttons/normalButton.js';
 import Inputfield from '../../components/inputfields/MaterialDesignField';
+import Logo from '../../components/assets/Text.png';
 import UserName from './userName.js';
 import { Link, Redirect } from "react-router-dom";
 import { db } from '../../database/config';
@@ -52,7 +53,7 @@ function LandingPage() {
         <div>
             <div className="main_container" style={showUsername ? {display: "none"} : {display: "flex"}}>
                 {redirectToVote ? <Redirect to={`/vote/${username}/${id}`}/> : null}
-                <div className="Logo">Eurovote</div>
+                <div className="Logo"><img src={Logo} className="Logo_img" alt="Eurovote"></img></div>
                     <div style={{width:"100%"} }> 
                         <div className="input_container input_margin">
                             <Inputfield id={"field"} label={"Skriv inn kode"} setFunction={setCode}/>
@@ -61,7 +62,7 @@ function LandingPage() {
                         <div className="input_container join_button" >
                             <NormalButton name="Join" action={joinButton}></NormalButton>
                         </div>
-                        <div className="message_code">Koden står øverst til høyre på skjermen til eieren av spillet</div>
+                        <div className="message_code">Koden står øverst på skjermen til eieren av spillet</div>
                     </div>
                     <div className="new_group_button">
                         <Link to={'/login'}>
