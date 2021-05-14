@@ -19,6 +19,11 @@ function CountryList(props) {
     const [countryIds, setCountryIds] = useState([]);
     const [index,setIndex] = useState(0)
     const [showResults, setShowResults] = useState(false);
+    const [mySwiper, setMySwiper] = useState(null);
+
+    const changeSwiperSlide = (index) => {
+        mySwiper.slideTo(index);
+    }
 
     useEffect(() =>{
         setCountries(props.countries)
@@ -41,10 +46,11 @@ function CountryList(props) {
     
     return(
         <div>
-            {showResults ? <ResultList hide={() => setShowResults(false)} countries={countries} adminId={props.adminId} username={props.username} /> : null}
+            {showResults ? <ResultList hide={() => setShowResults(false)} countries={countries} adminId={props.adminId} username={props.username} index={setIndex} changeIndex={changeSwiperSlide}/> : null}
             <div className="votingDiv">
             {countrylist.length ?
                 <Swiper
+                    onInit = {(s) => setMySwiper(s)}
                     slidesPerView={1}
                     pagination = {{dynamicBullets: true}}
                     virtual
