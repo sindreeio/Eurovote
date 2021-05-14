@@ -4,14 +4,13 @@
 
 
 .votingcontainer{
-    height: 100%;
+    height: 80%;
     width: 100vw;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
     flex-wrap: wrap;
-        
         
 }
 
@@ -58,9 +57,9 @@
 }
 
 .total_score {
-    width: 25%;
-    text-align: left;
-    font-size: 20px;
+    width: 15%;
+    text-align: center;
+    font-size: 18px;
     color: white;
 }
 
@@ -74,21 +73,35 @@
 }
 
 .reaction{
+    display: block;
     width: 25%;
     font-size: 20px;
     text-align: center;
 }
 
 .reaction:active{
-    font-size: 30px;
+    font-size: 35px;
 }
 
 .no_vote_message{
     display: flex;
     text-align: center;
-    height: 100%;
+    height: 80%;
     margin-top: 20vh;
     align-self: center;
     font-size: 30px;
     color: white;
+}
+
+.list_icon {
+    width: 10%;
+    text-align: center; 
+}
+
+.list_icon_img {
+    width: 28px;
+}
+
+.list_icon_img:active {
+    width: 35px;
 }
