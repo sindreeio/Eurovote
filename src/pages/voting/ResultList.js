@@ -77,7 +77,7 @@ function ResultList(props) {
     return(
         <div className="result_list_background" onClick={(e) => clickCheck(e)}>
             {redirectToHome ? <Redirect to="/"/>: null}
-            <div className="result_list_container">Ditt resultat:
+            <div className="result_list_container">{props.username}'s resultat:
                 <div>{resultList}</div>
             </div>
         </div>
