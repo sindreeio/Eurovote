@@ -94,6 +94,7 @@
     overflow: hidden;
     width: 20vw;
     height: auto;
+    max-height: 80vh;
     z-index: 5;
     font-size: 2vw;
     color: white;
