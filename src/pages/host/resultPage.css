@@ -39,7 +39,7 @@
     flex-direction: row;
     flex-wrap: nowrap;
     width: 100%;
-    height: auto;
+    min-height: fit-content;
     color: white;
     font-size: 1.6vw;
 }
