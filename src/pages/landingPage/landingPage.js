@@ -15,7 +15,7 @@ function LandingPage() {
     const [showUsername, setShowUsername] = useState(false);
     const [redirectToVote, setRedirectToVote] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const [nameTakenMsg, setNameTakenMsg] = useState("");
+    const [usernameError, setUsernameError] = useState("");
 
 
     function joinButton() {
@@ -62,7 +62,7 @@ function LandingPage() {
         })
         .then(()=>{
             if (username === ""){
-                setNameTakenMsg("Brukernavnet kan ikke være tomt");
+                setUsernameError("Brukernavnet kan ikke være tomt");
             }else if (!userNameExists){
                 localStorage.setItem("eurovote_uid",id);
                 localStorage.setItem("eurovote_username", username);
@@ -83,7 +83,7 @@ function LandingPage() {
                     })
                 })
             } else {
-                setNameTakenMsg("Dette brukernavnet er allerede i bruk");
+                setUsernameError("Dette brukernavnet er allerede i bruk");
             }
         })
     }
@@ -145,7 +145,7 @@ function LandingPage() {
                 }
             </div>
             <div style={showUsername ? {display: "block"} : {display: "none"}}>
-                <UserName back={back} submit={submit} name={setUsername} error={nameTakenMsg}></UserName>
+                <UserName back={back} submit={submit} name={setUsername} error={usernameError}></UserName>
             </div>
         </div>
 
