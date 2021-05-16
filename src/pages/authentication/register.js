@@ -50,14 +50,13 @@ const submit = () =>{
                     let current_pin = null;
                     db.collection("pin").doc("current_pin").get().then((doc)=>{
                         if(doc.exists){
-                            console.log(doc.data().current_pin)
                             current_pin = doc.data().current_pin
                         }
                         else{
                             console.log("no pin found");
                         }
                     }).then(()=>{
-                        db.collection('users').doc(user.user.uid).set({ pin:current_pin, "canVote": false});
+                        db.collection('users').doc(user.user.uid).set({ pin:current_pin, "canVote": false, "usersCanJoin": true});
                         db.collection("pin").doc("current_pin").set({current_pin: (current_pin + Math.floor(Math.random()*100))});
                     }
                     )

@@ -14,18 +14,31 @@ function LandingPage() {
     const [username, setUsername] = useState("");
     const [showUsername, setShowUsername] = useState(false);
     const [redirectToVote, setRedirectToVote] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
 
     function joinButton() {
         if (code) {
 
             db.collection("users").get().then((col) => {
+                var errormsg = ""
                 col.docs.forEach((usr) => {
                     if(parseInt(code) === usr.data().pin) {
-                        setShowUsername(true);
-                        setId(usr.id);
+                        if (usr.data().usersCanJoin !== false){
+                            setShowUsername(true);
+                            setId(usr.id);
+                        }
+                        else{
+                            errormsg = "Verten må vise koden på skjermen for at du skal kunne bli med";
+                        }
+                        
+                    }else {
+                        if (errormsg === "") {
+                            errormsg = "Det finnes ingen spill med denne koden";
+                        }
                     }
                 })
+                setErrorMessage(errormsg);
             });
             if(!showUsername) {
             }
@@ -33,6 +46,8 @@ function LandingPage() {
     }
 
     function submit() {
+        localStorage.setItem("eurovote_uid",id);
+        localStorage.setItem("eurovote_username", username);
         setRedirectToVote(true);
         const init_numbers = {"song":0, "performance":0, "show":0, "factor":0, "costume":0}
         db.collection("users").doc(id).collection("users").doc(username).set({"name":username, "time": Date.now()}).then(()=>{
@@ -49,12 +64,32 @@ function LandingPage() {
         })
     }
 
+    const checkIfMobile = () => {
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+            return true;
+        }
+        else if (/android/i.test(userAgent)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    useEffect(() => {
+        if(localStorage.getItem('eurovote_username') && localStorage.getItem('eurovote_uid')) {
+            setRedirectToVote(true);
+        }
+    }, [])
+
     return(
         <div>
             <div className="main_container" style={showUsername ? {display: "none"} : {display: "flex"}}>
-                {redirectToVote ? <Redirect to={`/vote/${username}/${id}`}/> : null}
+                {redirectToVote ? <Redirect to={`/vote`}/> : null}
                 <div className="Logo"><img src={Logo} className="Logo_img" alt="Eurovote"></img></div>
-                    <div style={{width:"100%"} }> 
+                {checkIfMobile() == true ?  
+                    <div style={{width:"100%"} }>
+                        
                         <div className="input_container input_margin">
                             <Inputfield id={"field"} label={"Skriv inn kode"} setFunction={setCode}/>
                         </div>
@@ -62,13 +97,23 @@ function LandingPage() {
                         <div className="input_container join_button" >
                             <NormalButton name="Join" action={joinButton}></NormalButton>
                         </div>
-                        <div className="message_code">Koden står øverst på skjermen til eieren av spillet</div>
+                        {errorMessage !== "" ? <div style={{color:"red"}} className="message_code">{errorMessage}</div> : null}
+                        <div className="message_code">Koden står øverst på skjermen til eieren av spillet.</div>
+                        <div className="message_code">Har du ikke noe spill? Besøk denne nettsiden på en PC/Mac for å opprette et nytt.</div>
+                        <div className="message_code">Vi anbefaler å legge denne webapplikasjonen til på hjemskjermen.</div>
                     </div>
-                    <div className="new_group_button">
-                        <Link to={'/login'}>
-                        <NormalButton name="Lag ny gruppe"></NormalButton>
-                        </Link>
+                    :
+                    <div className="flex_center">
+                        <div className="new_group_button">
+                            <Link to={'/login'}>
+                            <NormalButton name="Logg inn eller lag nytt spill"></NormalButton>
+                            </Link>
+                        </div>
+                        <div className="message_code">Trykk på knappen over for å lage et nytt spill. Bare én i gruppen trenger å gjøre dette. Vi anbefaler å koble denne PCen på en storskjerm.</div>    
+                    <div className="message_code">For å bli med i et spill, besøk siden på en mobil enhet</div>
+                    
                     </div>
+                }
             </div>
             <div style={showUsername ? {display: "block"} : {display: "none"}}>
                 <UserName back={setShowUsername} submit={submit} name={setUsername}></UserName>

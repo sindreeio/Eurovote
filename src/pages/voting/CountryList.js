@@ -35,7 +35,7 @@ function CountryList(props) {
     if (countries.length !== 0){
         countrylist = props.countries.map((country, index) => (
             <SwiperSlide key={country} virtualIndex={index}>
-                <div className="header"> {String.fromCharCode(country.flag[0],country.flag[1],country.flag[2],country.flag[3])} {country.name}</div>
+                <div className="header"> {country.flag.length === 14 ? String.fromCodePoint(country.flag.substr(0,7), country.flag.substr(7,14)) : null} {country.name}</div>
             </SwiperSlide>
         ));
         

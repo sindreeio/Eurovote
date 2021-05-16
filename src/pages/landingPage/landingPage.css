@@ -2,7 +2,6 @@
     padding-top: 50px;
     font-weight: bold;
     display: block;
-    margin: auto;
     width: 80vw;
     max-width: 500px;
     font-size: 50px;
@@ -20,9 +19,9 @@
  height: 100vh;
  width: 100%;
  display: flex;
- flex-direction: row;
- justify-content: center;
- flex-wrap: wrap;
+ flex-direction: column;
+ align-items: center;
+ flex-wrap: nowrap;
  
  
 }
@@ -43,6 +42,7 @@
     width: fit-content;
     margin: auto;
     margin-bottom: 10px;
+    margin-top: 40px;
 }
 
 .input_margin{
@@ -50,13 +50,22 @@
 }
 
 .new_group_button{
-    margin-top: auto;
-    margin-bottom: 60px;
+    margin-bottom: 10px;
+    width: fit-content;
+}
+
+.flex_center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
 .message_code{
     font-size: 12px;
     color: #ddd;
-    width: fit-content;
+    width: 90vw;
+    text-align: center;
+    padding: 10px;
     margin: auto;
 }

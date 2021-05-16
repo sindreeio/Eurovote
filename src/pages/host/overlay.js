@@ -32,11 +32,13 @@ function Overlay(props) {
         .then(()=>{
             db.collection("users").doc(props.adminId).update({"canVote":!status})
             setActiveVoting(!status);
-        })
-        
-        
-        
+        })  
     }
+
+    useEffect(() =>{
+        db.collection("users").doc(props.adminId).update({"usersCanJoin":showGameCode})
+    }, [showGameCode])
+    
     useEffect(()=>{
         db.collection("users").doc(props.adminId).get().then((doc)=>{
             if (doc.data()) {
@@ -72,13 +74,13 @@ function Overlay(props) {
             return second[1] - first[1];
         });
         resultlist.forEach((cou)=>{
-            var flag = [];
+            var flag = "";
             if (flags) {
                 flag = flags[cou[0]];
             };
             resultJSX.push(
                 <div key={cou[0]} className="result_list_row">
-                    {flag.length === 4 ? <div>{String.fromCharCode(flag[0],flag[1],flag[2],flag[3])}</div>: null}
+                    {flag.length === 14 ? <div>{String.fromCodePoint(flag.substr(0,7), flag.substr(7,14))}</div>: null}
                     <div className="result_list_name">{cou[0]}</div>
                     <div className="result_list_score">{cou[1]}</div>
                 </div>

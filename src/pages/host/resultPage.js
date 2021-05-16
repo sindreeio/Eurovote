@@ -57,13 +57,13 @@ function ResultPage(props) {
             
             // eslint-disable-next-line no-loop-func
             resultlist.forEach((cou)=>{
-                var flag = [];
+                var flag = "";
                 if (flags) {
                     flag = flags[cou[0]];
                 };
                 resultJSX.push(
                     <div key={cou[0]} className="result_page_list_element">
-                        {flag.length === 4 ? <div>{String.fromCharCode(flag[0],flag[1],flag[2],flag[3])}</div>: null}
+                        {flag.length === 14 ? <div>{String.fromCodePoint(flag.substr(0,7), flag.substr(7,14))}</div>: null}
                         <div className="result_page_country">{cou[0]}</div>
                         <div className="result_page_score">{categories[cat] === "Totalt" ? cou[1]: cou[1][cat]}</div>
                     </div>

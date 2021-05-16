@@ -24,7 +24,7 @@ function Router(){
                 <Route exact path="/host">
                     <HostPage/>
                 </Route>
-                <Route exact path="/vote/:username/:adminId">
+                <Route exact path="/vote/">
                     <VotingPage/>
                 </Route>
                 <Route exact path="/app">
