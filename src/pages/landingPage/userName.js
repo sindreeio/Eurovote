@@ -16,12 +16,12 @@ function UserName(props) {
                         <div className="input_container input_margin">
                             <Inputfield id={"username"} label={"Skriv inn brukernavn"} setFunction={props.name}/>
                         </div>
-                        
+                        <div className="message_code" style={{color: "red"}}>{props.error}</div>
                         <div className="input_container join_button" >
                             <NormalButton name="Join" action={props.submit}></NormalButton>
                         </div>
                         <div className="input_container join_button" >
-                            <NormalButton name="Tilbake" action={() => props.back(false)}></NormalButton>
+                            <NormalButton name="Tilbake" action={() => props.back()}></NormalButton>
                         </div>
                     </div>
             </div>
