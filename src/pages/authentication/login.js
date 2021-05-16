@@ -58,7 +58,7 @@ function Login(){
                         <NormalButton name="Registrer"></NormalButton>
                         </Link>
                     </div>
-                    {error && <p className="textColor">{error.message}</p>}
+                    {error && <p className="message_code">{error.message}</p>}
                 </div>
         </div>
     )
