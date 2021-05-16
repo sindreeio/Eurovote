@@ -56,7 +56,10 @@ function LandingPage() {
                 if (collection.docs.length == 0){
                     db.collection("countries").orderBy("turn").get().then((countries)=>{
                         countries.forEach((country) =>{
-                            userRef.doc(country.id).set(init_numbers);
+                            if (parseInt(country.data().turn) !== -1) {
+                                console.log(country.id);
+                                userRef.doc(country.id).set(init_numbers);
+                            }
                         });
                     })
                 }

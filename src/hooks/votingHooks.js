@@ -12,9 +12,10 @@ const useCountries= () =>{
             var countryIdList =[]
             var countrylist = []
             countries.forEach((country) =>{
-                console.log(country.id)
-                countrylist.push(country.data());
-                countryIdList.push(country.id)
+                if (parseInt(country.data().turn) !== -1) {
+                    countrylist.push(country.data());
+                    countryIdList.push(country.id)
+                }
             });
             setCountries(countrylist);
             setCountryIds(countryIdList)

@@ -36,7 +36,10 @@ export const useFlags = (adminId) =>{
 
 const removeUser = (username, adminId) => {
     if (window.confirm("OBS: Spilleren må selv logge ut før du kan slette den. Er du sikker på at du vil forsette?")) {
-        db.collection("users").doc(adminId).collection("users").doc(username).delete();
+        var dbref = db.collection("users").doc(adminId).collection("users").doc(username);
+        dbref.collection("countries").get().then((snapshot) => {
+            snapshot.forEach((doc) => {doc.ref.delete()})
+        }).then(dbref.delete())
     }
 }
 
