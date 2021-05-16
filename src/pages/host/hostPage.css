@@ -136,6 +136,11 @@
     padding: 10px;
     margin-top: 20px;
     text-align: center;
+    overflow-y: scroll;
+}
+
+.users_list_box::-webkit-scrollbar {
+    display: none;
 }
 
 html::-webkit-scrollbar {
@@ -166,4 +171,28 @@ html {
 
 .close_button{
     cursor: pointer;
+}
+
+.overlay_userlist_element {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    text-align: center;
+}
+
+.overlay_userlist_delete {
+    margin-right: 0;
+    cursor: pointer;
+}
+
+.overlay_userlist_delete:hover {
+    margin-right: 0;
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+.overlay_userlist_username {
+    margin-left: auto;
+    margin-right: auto;
 }

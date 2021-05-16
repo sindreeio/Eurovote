@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import {db} from '../database/config.js';
 import Reaction from '../components/reaction';
+import Delete from '../components/assets/delete_white_24dp.svg';
 
 
 export const useGameCode = (adminId) =>{
@@ -33,6 +34,12 @@ export const useFlags = (adminId) =>{
     return flags;
 }
 
+const removeUser = (username, adminId) => {
+    if (window.confirm("OBS: Spilleren må selv logge ut før du kan slette den. Er du sikker på at du vil forsette?")) {
+        db.collection("users").doc(adminId).collection("users").doc(username).delete();
+    }
+}
+
 export const useUsers = (adminId, flags) =>{
     const [users, setUsers] = useState([]);
     const [newResults, setNewResults] = useState();
@@ -45,7 +52,12 @@ export const useUsers = (adminId, flags) =>{
 
             snapshot.forEach(element => {
                 usernames.push(element.id)
-                users.push(<div>{element.id}</div>);
+                users.push(
+                    <div className="overlay_userlist_element">
+                        <div className="overlay_userlist_username">{element.id}</div>
+                        <div onClick={() => removeUser(element.id, adminId)} className="overlay_userlist_delete"><img src={Delete} alt="Slett"></img></div>
+                    </div>
+                );
                 
             })
             setUsers(users);

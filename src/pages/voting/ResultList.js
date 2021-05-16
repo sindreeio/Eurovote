@@ -18,9 +18,11 @@ function ResultList(props) {
     }
 
     const logout = () => {
-        localStorage.removeItem("eurovote_uid");
-        localStorage.removeItem("eurovote_username");
-        setRedirectToHome(true);
+        if (window.confirm("Er du sikker på at du vil logge ut?")) {
+            localStorage.removeItem("eurovote_uid");
+            localStorage.removeItem("eurovote_username");
+            setRedirectToHome(true);
+        }
 
     }
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState }  from 'react';
-import {db} from '../../database/config.js';
+import {db, firebaseAuth} from '../../database/config.js';
 import {Redirect, Link} from 'react-router-dom';
 import './hostPage.css';
 import MaterialUIswitch from '../../components/switches/materialUIswitch'
@@ -33,6 +33,19 @@ function Overlay(props) {
             db.collection("users").doc(props.adminId).update({"canVote":!status})
             setActiveVoting(!status);
         })  
+    }
+
+    
+
+    const logOut = () => {
+        if (window.confirm("Er du sikker på at du vil logge ut?")) {
+            firebaseAuth.signOut().then(() => {
+                // Sign-out successful.
+              }).catch((error) => {
+                // An error happened.
+              });
+
+        }
     }
 
     useEffect(() =>{
@@ -102,8 +115,8 @@ function Overlay(props) {
             {topMenu ? <div className="top_menu">
                 <div className="top_menu_box close_button" onClick={() => setTopMenu(false)}><img src={Close} alt="close"></img></div>
                 <div className="top_menu_box"><MaterialUIswitch label={"Vis NRK"} default={props.nrk} action={props.setNrk}/></div>
-                <div className="top_menu_box" ><MaterialUIswitch label={"Skjul NRK kontrollere"} default={activateNRKCon} action={setActivateNRKCon}/></div>
-                <div className="top_menu_box"><MaterialUIswitch label={"Vis Spillkode"} default={showGameCode} action={setShowGameCode}/></div>
+                <div className="top_menu_box" ><MaterialUIswitch label={"Skjul NRKkontrollere"} default={activateNRKCon} action={setActivateNRKCon}/></div>
+                <div className="top_menu_box"><MaterialUIswitch label={"Vis spillkode"} default={showGameCode} action={setShowGameCode}/></div>
                 <div className="top_menu_box"><MaterialUIswitch label={"Vis brukere"} default={showUsers} action={setShowUsers}/></div>
                 <div className="top_menu_box"><MaterialUIswitch label={"Tillat stemming"} default={activeVoting} action={changeVotingStatus}/></div>
                 <div className="top_menu_box"><MaterialUIswitch label={"Vis resultatliste"} default={showResultList} action={setShowResultList}/></div>
@@ -111,7 +124,10 @@ function Overlay(props) {
                         <Link to={'/results'}>
                             <NormalButton name="Gå til resultater"></NormalButton>
                         </Link>
-                    </div>
+                </div>
+                <div className="top_menu_box">
+                        <NormalButton name="Logg ut" action={logOut}></NormalButton>
+                </div>
             </div> : <div className="top_menu_icon" onClick={() => setTopMenu(true)}><img src={Menu} alt="menu"></img></div>}
             <div className="host_info_container">
                     {showGameCode ? <div className="game_code_box">

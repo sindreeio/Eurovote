@@ -24,6 +24,10 @@
     
 }
 
+.result_list_container::-webkit-scrollbar {
+    display: none;
+}
+
 .voting_result_list_row{
     display: flex;
     flex-direction: row;
