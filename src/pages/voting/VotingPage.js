@@ -14,7 +14,7 @@ function VotingPage(prop){
     
     const {myCountries, countryIds} = useCountries();
     let username = localStorage.getItem('eurovote_username');
-    let adminId = localStorage.getItem('eurovote_uid')
+    let adminId = localStorage.getItem('eurovote_uid');
     
     return(
         <div style={{height: "100vh"}}>

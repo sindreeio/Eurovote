@@ -46,24 +46,41 @@ function LandingPage() {
     }
 
     function submit() {
-        localStorage.setItem("eurovote_uid",id);
-        localStorage.setItem("eurovote_username", username);
-        setRedirectToVote(true);
-        const init_numbers = {"song":0, "performance":0, "show":0, "factor":0, "costume":0}
-        db.collection("users").doc(id).collection("users").doc(username).set({"name":username, "time": Date.now()}).then(()=>{
-            const userRef = db.collection("users").doc(id).collection("users").doc(username).collection("countries");
-            userRef.get().then((collection)=> {
-                if (collection.docs.length == 0){
-                    db.collection("countries").orderBy("turn").get().then((countries)=>{
-                        countries.forEach((country) =>{
-                            if (parseInt(country.data().turn) !== -1) {
-                                console.log(country.id);
-                                userRef.doc(country.id).set(init_numbers);
-                            }
-                        });
+        var userNameExists = false;
+        db.collection("users").doc(id).get().then( async (doc) => {
+            if(doc.data().started === false) {
+              await db.collection("users").doc(id).collection("users").get().then((users)=>{
+                    users.forEach((user)=>{
+                        if (user.data().name == username){
+                            console.log(user.data().name)
+                            userNameExists = true;
+                        }
                     })
-                }
-            })
+                })
+            }
+        })
+        .then(()=>{
+            console.log("neste blokk")
+            if (!userNameExists){
+                localStorage.setItem("eurovote_uid",id);
+                localStorage.setItem("eurovote_username", username);
+                setRedirectToVote(true);
+                const init_numbers = {"song":0, "performance":0, "show":0, "factor":0, "costume":0}
+                db.collection("users").doc(id).collection("users").doc(username).set({"name":username, "time": Date.now()}).then(()=>{
+                    const userRef = db.collection("users").doc(id).collection("users").doc(username).collection("countries");
+                    userRef.get().then((collection)=> {
+                        if (collection.docs.length == 0){
+                            db.collection("countries").orderBy("turn").get().then((countries)=>{
+                                countries.forEach((country) =>{
+                                    if (parseInt(country.data().turn) !== -1) {
+                                        userRef.doc(country.id).set(init_numbers);
+                                    }
+                                });
+                            })
+                        }
+                    })
+                })
+            }
         })
     }
 

@@ -56,7 +56,7 @@ const submit = () =>{
                             console.log("no pin found");
                         }
                     }).then(()=>{
-                        db.collection('users').doc(user.user.uid).set({ pin:current_pin, "canVote": false, "usersCanJoin": true});
+                        db.collection('users').doc(user.user.uid).set({ pin:current_pin, "canVote": false, "usersCanJoin": true, "started": false});
                         db.collection("pin").doc("current_pin").set({current_pin: (current_pin + Math.floor(Math.random()*100))});
                     }
                     )
