@@ -61,8 +61,9 @@ function LandingPage() {
             }
         })
         .then(()=>{
-            console.log("neste blokk")
-            if (!userNameExists){
+            if (username === ""){
+                setNameTakenMsg("Brukernavnet kan ikke være tomt");
+            }else if (!userNameExists){
                 localStorage.setItem("eurovote_uid",id);
                 localStorage.setItem("eurovote_username", username);
                 setRedirectToVote(true);
