@@ -15,6 +15,7 @@ function LandingPage() {
     const [showUsername, setShowUsername] = useState(false);
     const [redirectToVote, setRedirectToVote] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [nameTakenMsg, setNameTakenMsg] = useState("");
 
 
     function joinButton() {
@@ -80,8 +81,15 @@ function LandingPage() {
                         }
                     })
                 })
+            } else {
+                setNameTakenMsg("Dette brukernavnet er allerede i bruk");
             }
         })
+    }
+
+    const back = () => {
+        setShowUsername(false)
+        setErrorMessage("")
     }
 
     const checkIfMobile = () => {
@@ -136,7 +144,7 @@ function LandingPage() {
                 }
             </div>
             <div style={showUsername ? {display: "block"} : {display: "none"}}>
-                <UserName back={setShowUsername} submit={submit} name={setUsername}></UserName>
+                <UserName back={back} submit={submit} name={setUsername} error={nameTakenMsg}></UserName>
             </div>
         </div>
 
