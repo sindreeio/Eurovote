@@ -30,7 +30,7 @@ function Overlay(props) {
             status = doc.data().canVote
         })
         .then(()=>{
-            db.collection("users").doc(props.adminId).update({"canVote":!status})
+            db.collection("users").doc(props.adminId).update({"canVote":!status, "started":true})
             setActiveVoting(!status);
         })  
     }
