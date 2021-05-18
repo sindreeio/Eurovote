@@ -20,6 +20,8 @@ function CountryList(props) {
     const [index,setIndex] = useState(0)
     const [showResults, setShowResults] = useState(false);
     const [mySwiper, setMySwiper] = useState(null);
+    var lastReaction = Date.now();
+    const reactionLimit = 500;
 
     const changeSwiperSlide = (index) => {
         mySwiper.slideTo(index);
@@ -41,7 +43,10 @@ function CountryList(props) {
         
     }
     const sendReaction = (name) => {
-        db.collection("users").doc(props.adminId).collection("reactions").doc("reaction").set({"name": name, "time": Date.now()});
+        if (Date.now() - lastReaction > reactionLimit) {
+            lastReaction = Date.now();
+            db.collection("users").doc(props.adminId).collection("reactions").doc("reaction").set({"name": name, "time": Date.now()});
+        }
     }
     
     return(
