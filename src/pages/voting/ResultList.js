@@ -59,8 +59,8 @@ function ResultList(props) {
             )
         })
         resultJSX.push(
-            <div key={resultJSX.length + 1} className="voting_result_list_row" style={{backgroundColor: "red"}} onClick={() => logout()}>
-                <div className="voting_result_list_name" >Logg ut</div>
+            <div key={resultJSX.length + 1} className="voting_result_list_row" style={{color: "red", justifyContent: "center"}} onClick={() => logout()}>
+                <div >Logg ut</div>
             </div>
         )
         setResultList(resultJSX);

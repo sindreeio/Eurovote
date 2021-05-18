@@ -37,9 +37,10 @@
     width: 100%;
     height: 50px;
     margin-top: 10px;
-    border-color: blueviolet;
+    /*border-color: blueviolet;
     border-style: solid;
-    border-radius: 5px;
+    border-radius: 5px;*/
+    border-top: solid 1px #5557;
 }
 
 .voting_result_list_name{
