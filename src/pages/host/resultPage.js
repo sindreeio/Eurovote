@@ -83,9 +83,9 @@ function ResultPage(props) {
     }, [usernames.length])
 
     return(
-        <div>
+        <div className="result_page_container">
             <div className="result_page_header">Resultater</div>
-            <div className="result_page_container">{resultList}</div>
+            <div className="result_page_lists_container">{resultList}</div>
             <div className="result_page_back_button">
                 <div>
                     <Link to={'/host'}>
