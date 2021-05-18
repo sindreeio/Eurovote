@@ -105,3 +105,19 @@
 .list_icon_img:active {
     width: 35px;
 }
+
+.swiper-pagination > .swiper-pagination-bullet {
+    opacity: 1;
+    border: rgb(122, 108 ,250) solid 1px;
+    background-color: transparent;
+}
+.swiper-pagination > .swiper-pagination-bullet-active {
+    background-color: rgb(122, 108 ,250);
+}
+
+.swiper-container > .swiper-button-next {
+    color: rgb(122, 108 ,250);
+}
+.swiper-container > .swiper-button-prev {
+    color: rgb(122, 108 ,250);
+}
