@@ -38,6 +38,8 @@
     padding: 5px;
     background-color: rgba(50, 50, 50, 0.5);
     background-color: rgb(120, 87 ,204);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 .result_page_list::-webkit-scrollbar {
     display: none;

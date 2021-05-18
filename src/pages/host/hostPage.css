@@ -106,10 +106,10 @@
 .users_list_box {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     width: 50vw;
     max-height: 70vh;
-    overflow-x: hidden;
+    overflow-x: scroll;
     background-color: #333;
     border-radius: 10px;
     opacity: 0.9;
@@ -119,6 +119,8 @@
     margin-top: 20px;
     text-align: center;
     overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .users_list_box::-webkit-scrollbar {
