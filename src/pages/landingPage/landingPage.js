@@ -67,15 +67,15 @@ function LandingPage() {
                 localStorage.setItem("eurovote_uid",id);
                 localStorage.setItem("eurovote_username", username);
                 setRedirectToVote(true);
-                const init_numbers = {"song":0, "performance":0, "show":0, "factor":0, "costume":0}
+                //const init_numbers = {"song":0, "performance":0, "show":0, "factor":0, "costume":0}
                 db.collection("users").doc(id).collection("users").doc(username).set({"name":username, "time": Date.now()}).then(()=>{
                     const userRef = db.collection("users").doc(id).collection("users").doc(username).collection("countries");
                     userRef.get().then((collection)=> {
-                        if (collection.docs.length == 0){
+                        if (collection.docs.length === 0){
                             db.collection("countries").orderBy("turn").get().then((countries)=>{
                                 countries.forEach((country) =>{
                                     if (parseInt(country.data().turn) !== -1) {
-                                        userRef.doc(country.id).set(init_numbers);
+                                        userRef.doc(country.id).set({"song":0, "performance":0, "show":0, "factor":0, "costume":0, "name":country.data().name});
                                     }
                                 });
                             })

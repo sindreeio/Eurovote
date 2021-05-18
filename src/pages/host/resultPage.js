@@ -21,13 +21,13 @@ function ResultPage(props) {
                     let data = country.data();
                     
                     let total_score = [data.factor , data.costume , data.show , data.performance ,data.song]
-                    if(resultsLists[country.id]){
+                    if(resultsLists[data.name]){
                         for (var score in total_score) {
-                            resultsLists[country.id][score] = resultsLists[country.id][score] + total_score[score]    
+                            resultsLists[data.name][score] = resultsLists[data.name][score] + total_score[score]    
                         }
                     }
                     else{
-                        resultsLists[country.id]= total_score
+                        resultsLists[data.name]= total_score
                     }
                 })
             })
@@ -59,7 +59,7 @@ function ResultPage(props) {
             resultlist.forEach((cou)=>{
                 var flag = "";
                 if (flags) {
-                    flag = flags[cou[0]];
+                    flag = flags[cou[0].toLowerCase()];
                 };
                 resultJSX.push(
                     <div key={cou[0]} className="result_page_list_element">

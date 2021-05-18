@@ -68,11 +68,11 @@ function Overlay(props) {
                 countries.forEach((country)=>{
                     let data = country.data();
                     let total_score = data.factor + data.costume + data.show + data.performance +data.song
-                    if(resultsLists[country.id]){
-                        resultsLists[country.id] = resultsLists[country.id] + total_score
+                    if(resultsLists[data.name]){
+                        resultsLists[data.name] = resultsLists[data.name] + total_score
                     }
                     else{
-                        resultsLists[country.id] = total_score;
+                        resultsLists[data.name] = total_score;
                     }
                 })
             })
@@ -89,7 +89,7 @@ function Overlay(props) {
         resultlist.forEach((cou)=>{
             var flag = "";
             if (flags) {
-                flag = flags[cou[0]];
+                flag = flags[cou[0].toLowerCase()];
             };
             resultJSX.push(
                 <div key={cou[0]} className="result_list_row">

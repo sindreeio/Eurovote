@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {db} from '../../database/config.js';
-import {useFlags} from '../../hooks/hostHooks';
 import './resultList.css'
 import {Redirect } from 'react-router-dom';
 
 
 function ResultList(props) {
 
-    var flags = useFlags(props.adminId);
     const [resultList, setResultList] = useState();
     const [redirectToHome, setRedirectToHome] = useState(false);
 
@@ -29,12 +27,15 @@ function ResultList(props) {
     const getResults = async () =>{
         let resultsLists ={};
         let countryOrder = {};
-        props.countries.forEach((country) => {countryOrder[country.name.toLowerCase()] = country.turn - 1})
+        let flags = {}
+        props.countries.forEach((country) => {
+            countryOrder[country.name] = country.turn - 1;
+            flags[country.name] = country.flag;
+        })
         await db.collection("users").doc(props.adminId).collection("users").doc(props.username).collection("countries").get().then((countries)=>{
             countries.forEach((country)=>{
                 let data = country.data();
-                let total_score = data.factor + data.costume + data.show + data.performance +data.song
-                resultsLists[country.id] = total_score;
+                resultsLists[data.name] = data.factor + data.costume + data.show + data.performance +data.song;
             })
         })
         // console.log(JSON.stringify(resultsLists));
@@ -71,7 +72,7 @@ function ResultList(props) {
 
     useEffect(()=> {
         getResults()
-    },[flags])
+    },[])
 
 
     return(
