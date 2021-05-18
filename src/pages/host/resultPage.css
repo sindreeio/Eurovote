@@ -1,17 +1,22 @@
+.result_page_container {
+    height: 100vh;
+    width: 100vw;
+}
+
 .result_page_header {
     display: block;
     text-align: center;
     height: auto;
-    margin-top: 3vh;
-    margin-bottom: 3vh;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
     color: white;
-    font-size: 5vw;
+    font-size: 3vw;
     
 }
 
-.result_page_container {
-    width: 100vw;
-    height: 100%;
+.result_page_lists_container {
+    width: 100%;
+    height: auto;
     display: flex;
     justify-content: center;
     flex-direction: row-reverse;
@@ -20,9 +25,9 @@
 
 .result_page_list {
     width: 15vw;
-    min-height: auto;
-    max-height: 90vh;
-    overflow: hidden;
+    max-height: 75vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -31,7 +36,11 @@
     margin-right: auto;
     border-radius: 5px;
     padding: 5px;
-    background-color: rgba(50, 50, 50, 0.5)
+    background-color: rgba(50, 50, 50, 0.5);
+    background-color: rgb(120, 87 ,204);
+}
+.result_page_list::-webkit-scrollbar {
+    display: none;
 }
 
 .result_page_list_element {
@@ -42,6 +51,7 @@
     min-height: fit-content;
     color: white;
     font-size: 1.6vw;
+    border-top: solid 1px #4449;
 }
 
 .result_page_category {
@@ -67,5 +77,5 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: center;
-    margin-top: 5vh;
+    margin-top: 20px;
 }
