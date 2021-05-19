@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'react';
 import {db} from '../database/config.js';
 import Reaction from '../components/reaction';
-import Delete from '../components/assets/delete_white_24dp.svg';
 
 
 export const useGameCode = (adminId) =>{
@@ -19,72 +18,88 @@ export const useGameCode = (adminId) =>{
 };
 
 
-export const useFlags = (adminId) =>{
-    const [flags, setFlags] = useState();
-
+export const useFlags = () =>{
+    const [flags, setFlags] = useState({});
     useEffect(() =>{
         db.collection("countries").get().then((countries)=>{
             var flagList = {}
             countries.forEach((country)=>{
                 flagList[country.id] = country.data().flag;
             })
+            console.log("FLAGS")
             setFlags(flagList);
         })
-    }, [adminId])
+    }, [])
     return flags;
 }
 
-const removeUser = (username, adminId) => {
-    if (window.confirm("OBS: Spilleren må selv logge ut før du kan slette den. Er du sikker på at du vil forsette?")) {
-        var dbref = db.collection("users").doc(adminId).collection("users").doc(username);
-        dbref.collection("countries").get().then((snapshot) => {
-            snapshot.forEach((doc) => {doc.ref.delete()})
-        }).then(dbref.delete())
-    }
+
+export const useUsers = (adminId) =>{
+    const [newUser, setNewUser] = useState([]);
+    const [removedUser, setRemovedUser] = useState([]);
+    useEffect(() => {
+        
+        const unsubscribe = db.collection("users").doc(adminId).collection("users").onSnapshot((snapshot) => {
+            let newUser = [];     
+            let removedUser = [];       
+            snapshot.docChanges().forEach((c) => {
+                console.log("USEUSERS")
+                if (c.type === "added" ){ 
+                    newUser.push(c.doc.id)
+                }
+                else if (c.type === "removed"){
+                    removedUser.push(c.doc.id)
+                }
+            })
+            setRemovedUser(removedUser)
+            setNewUser(newUser);
+        })
+        return () => {console.log("UNSUB"); unsubscribe()}
+    }, [adminId])
+    return {newUser, removedUser};
 }
 
-export const useUsers = (adminId, flags) =>{
-    const [users, setUsers] = useState([]);
-    const [newResults, setNewResults] = useState();
-    const [usernames, setUsernames] = useState([])
+export const useUserResults = (adminId, username) => {
+    const [newResults, setNewResults] = useState([]);
     useEffect(() => {
-
-        const unsubscribe = db.collection("users").doc(adminId).collection("users").onSnapshot((snapshot) => {
-            let users = [];
-            let usernames = []                
-
-            snapshot.forEach(element => {
-                usernames.push(element.id)
-                users.push(
-                    <div className="overlay_userlist_element">
-                        <div className="overlay_userlist_username">{element.id}</div>
-                        <div onClick={() => removeUser(element.id, adminId)} className="overlay_userlist_delete"><img src={Delete} alt="Slett"></img></div>
-                    </div>
-                );
+        username.forEach((user) => {
+            const unsubscribe = db.collection("users").doc(adminId).collection("users").doc(user).collection("countries").onSnapshot((snapshot) => {
+                let userResults = [user];
+                let results = []
+                snapshot.docChanges().forEach((change) => {
+                    let newResult = []
+                    if(change.doc.data() !== null) {
+                        let data = change.doc.data(); 
+                        newResult.push(change.doc.id);
+                        newResult.push(data.factor + data.costume + data.show + data.performance +data.song);
+                        results.push(newResult);
+                    }
+                    //results[user][change.doc.id] = change.doc.data().total
+                })
+                userResults.push(results)
+                setNewResults(userResults);
                 
             })
-            setUsers(users);
-            setUsernames(usernames);
-            setNewResults(Date.now());
+            return () => {console.log("UNSUB"); unsubscribe()}
         })
-        return () => unsubscribe()
-    }, [adminId, flags])
-    return {users, usernames, newResults};
+    }, [username, adminId])
+    return newResults;
 }
-
 
 export const useLatestReaction = (adminId) =>{
     const [time, setTime] = useState(0);
     const [myName, setMyName] = useState("lol");
 
     useEffect(() => {
+        
         const unsubscribe = db.collection("users").doc(adminId).collection("reactions").doc("reaction").onSnapshot((snapshot) => {
             if (snapshot.data()) {
+                console.log("REACTION")
                 setMyName(snapshot.data().name);
                 setTime(snapshot.data().time);                
             }
         });
-        return () => unsubscribe()
+        return () => {console.log("UNSUB"); unsubscribe()}
     }, [adminId]);
 
     return {myName, time};
@@ -97,6 +112,7 @@ export const useEmojis = (time, myName) =>{
 
 
     useEffect(() => {
+
         if (Date.now() - oldTime > 5000) {
             setEmojis([<Reaction key={time} name={myName} />]);
         } else {

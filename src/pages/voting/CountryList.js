@@ -22,6 +22,7 @@ function CountryList(props) {
     const [mySwiper, setMySwiper] = useState(null);
     var lastReaction = Date.now();
     const reactionLimit = 500;
+    const [canVote, setCanVote] = useState(false);
 
     const changeSwiperSlide = (index) => {
         mySwiper.slideTo(index);
@@ -32,17 +33,29 @@ function CountryList(props) {
         setCountryIds(props.countryIds)
         console.log(props.countryIds)
     }, [props.countries, props.countryIds])
+
+    useEffect(() => {
+        const unsubscribe = db.collection("users").doc(props.adminId).onSnapshot((doc)=>{
+            if(doc.data()){
+                console.log("COUNTRYVOTERSNAPSHOT")
+                setCanVote(doc.data().canVote)
+            }
+        });
+        return () => {console.log("UNSUB"); unsubscribe()}
+    }, [props.adminId])
+
     
     let countrylist = []
     if (countries.length !== 0){
         countrylist = props.countries.map((country, index) => (
-            <SwiperSlide key={country} virtualIndex={index}>
+            <SwiperSlide key={country.name + "swipe"} virtualIndex={index}>
                 <div className="header"> {country.flag.length === 14 ? String.fromCodePoint(country.flag.substr(0,7), country.flag.substr(7,14)) : null} {country.name}</div>
             </SwiperSlide>
         ));
         
     }
     const sendReaction = (name) => {
+        console.log("COUNTRYLISTREACTION")
         if (Date.now() - lastReaction > reactionLimit) {
             lastReaction = Date.now();
             db.collection("users").doc(props.adminId).collection("reactions").doc("reaction").set({"name": name, "time": Date.now()});
@@ -68,7 +81,7 @@ function CountryList(props) {
                 null
             }
             <div className="votingcontainer">
-                <Countryvoter countryId={countryIds[index]} adminId={props.adminId} username={props.username} score={setScore}/>
+                <Countryvoter countryId={countryIds[index]} adminId={props.adminId} username={props.username} score={setScore} canVote={canVote}/>
             </div>
             <div className="vote_bottom_bar">
                 <div className="list_icon" onClick={() => setShowResults(!showResults)}><img className="list_icon_img" src={Result} alt="Res"></img></div>

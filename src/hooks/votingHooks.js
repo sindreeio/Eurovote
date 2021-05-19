@@ -8,6 +8,7 @@ const useCountries= () =>{
 
 
     useEffect(()=>{
+        console.log("USECOUNTRIES")
         db.collection("countries").orderBy("turn").get().then((countries)=>{
             var countryIdList =[]
             var countrylist = []
