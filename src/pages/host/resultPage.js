@@ -14,14 +14,13 @@ function ResultPage(props) {
     
     const getResults = async () =>{
         let resultsLists ={};
-        console.log(uid);
         let usernames = [];
         await db.collection("users").doc(uid).collection("users").get().then(async (users) => {
+                console.log("RESULT PAGE USERS")
                users.forEach( async (user) => {
                     usernames.push(user.id);
                 })
             })
-        console.log(usernames);
         var promises = usernames.map( async (us) =>{
             await db.collection("users").doc(uid).collection("users").doc(us).collection("countries").get().then((countries)=>{
                     countries.forEach((country)=>{
@@ -40,13 +39,11 @@ function ResultPage(props) {
                 })
             })
         await Promise.all(promises);
-        console.log(resultsLists)
         //console.log(JSON.stringify(resultsLists));
         let resultTables = [];
         var resultlist = Object.keys(resultsLists).map((key)=>{
             return [key, resultsLists[key]]
         })
-        console.log(resultlist)
         const categories = ["Eurovisionfaktor", "Kostyme", "Sceneshow", "Framføring", "Sang", "Totalt"]
         for (var cat in categories) {
             let resultJSX = [<div className="result_page_category">{categories[cat]}</div>];
@@ -85,11 +82,11 @@ function ResultPage(props) {
       
    }
     useEffect(()=> {
-        if(uid) {
+        if(Object.keys(flags).length !== 0) {
             getResults()
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [uid])
+    }, [flags])
 
     return(
         <div className="result_page_container">
