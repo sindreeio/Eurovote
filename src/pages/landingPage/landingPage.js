@@ -20,7 +20,7 @@ function LandingPage() {
 
     function joinButton() {
         if (code) {
-
+            console.log("JOIN")
             db.collection("users").get().then((col) => {
                 var errormsg = ""
                 col.docs.forEach((usr) => {

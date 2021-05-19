@@ -11,7 +11,6 @@ function MaterialDesignSlider(props){
     
 
     useEffect(() => {
-        console.log(props.value);
         setScore(props.value);
         setSlider(props.value);
     }, [props.value])

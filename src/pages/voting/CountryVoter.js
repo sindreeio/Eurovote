@@ -10,38 +10,48 @@ function CountryVoter(props) {
     const [showScore, setShowScore] = useState(0);
     const [costumeScore, setCostumeScore] = useState(0);
     const [factorScore, setFactorScore] = useState(0);
-    const [canVote, setCanVote] = useState(false);
     
 
     const setVoteForCountry = (score, category)=>{
-        if(canVote){
-            db.collection("users").doc(props.adminId).collection("users").doc(props.username).collection("countries").doc(props.countryId).set({[category]:score}, {merge:true})
+        var total = songScore + performanceScore + showScore + costumeScore + factorScore;
+        console.log("COUNRYVOTERVOTE");
+        
+        var dbRef = db.collection("users").doc(props.adminId).collection("users").doc(props.username);
+        if(props.canVote){
+            dbRef.collection("countries").doc(props.countryId).set({[category]:score}, {merge:true})
             .then(()=>{
-                db.collection("users").doc(props.adminId).collection("users").doc(props.username).update({"time":Date.now()})
+                //dbRef.update({"time":Date.now()})
             })
             switch (category) {
                 case "song":
+                    total = total - songScore + score
                     setSongScore(score);
                     break;
                 case "performance":
+                    total = total - performanceScore + score
                     setPerformanceScore(score);
                     break;
                 case "show":
+                    total = total - showScore + score
                     setShowScore(score);
                     break;
                 case "costume":
+                    total = total - costumeScore + score
                     setCostumeScore(score);
                     break;
                 case "factor":
+                    total = total - factorScore + score
                     setFactorScore(score);
                     break;
                 default:
                     break;
             }
+            //dbRef.collection("countries").doc(props.countryId).set({"total":total}, {merge:true});
         }
     }
 
     useEffect(() => {
+        console.log("COUNTRYCOTERSCORE")
         db.collection("users").doc(props.adminId).collection("users").doc(props.username).collection("countries").doc(props.countryId).get().then((data) => {
             if (data.data()){
                 setSongScore(data.data().song);
@@ -51,21 +61,21 @@ function CountryVoter(props) {
                 setFactorScore(data.data().factor);
             }
         })
-        const unsubscribe = db.collection("users").doc(props.adminId).onSnapshot((doc)=>{
-            if(doc.data()){
-                setCanVote(doc.data().canVote)
-            }
-        });
-        return () => unsubscribe()
-    }, [props.adminId, props.countryId, props.username])
+    }, [props.countryId])
+    
     
     useEffect(() => {
+        var total = songScore + performanceScore + showScore + costumeScore + factorScore;
+        
+        if (total) {
+            
+        }
         props.score(songScore + performanceScore + showScore + costumeScore + factorScore);
     })
 
     return(
         <div>
-            {canVote?
+            {props.canVote?
             <div>
             <div className="slidercontainer" >
                 <div className="text">Sang:</div>

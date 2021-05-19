@@ -6,7 +6,7 @@ import MaterialUIswitch from '../../components/switches/materialUIswitch'
 import NormalButton from '../../components/buttons/normalButton.js';
 import Menu from '../../components/assets/menu-white-18dp.svg';
 import Close from '../../components/assets/close-white-18dp.svg';
-import {useGameCode, useFlags, useUsers, useLatestReaction, useEmojis} from '../../hooks/hostHooks';
+import {useGameCode, useLatestReaction, useEmojis} from '../../hooks/hostHooks';
 
 function Overlay(props) {
     const [activateNRKCon, setActivateNRKCon] = useState(false);
@@ -19,13 +19,15 @@ function Overlay(props) {
     const [showUsers, setShowUsers] = useState(true);
     const [resultList, setResultList] = useState("(Ingen stemmer gitt)");
     const [showResultList, setShowResultList] = useState(false);
-    var flags = useFlags(props.adminId);
-    const {users, usernames, newResults} = useUsers(props.adminId, flags);
+
+    
+    
 
 
 
     const changeVotingStatus = () =>{
         let status;
+        console.log("VOTINGSTATUS")
         db.collection("users").doc(props.adminId).get().then((doc)=>{
             status = doc.data().canVote
         })
@@ -49,10 +51,12 @@ function Overlay(props) {
     }
 
     useEffect(() =>{
+        console.log("GAMECODE")
         db.collection("users").doc(props.adminId).update({"usersCanJoin":showGameCode})
     }, [showGameCode])
     
     useEffect(()=>{
+        console.log("ACTVIEVOTING")
         db.collection("users").doc(props.adminId).get().then((doc)=>{
             if (doc.data()) {
                 setActiveVoting(doc.data().canVote)
@@ -61,35 +65,30 @@ function Overlay(props) {
 
     }, [props.adminId])
 
-     const getResults = async () =>{
-         let resultsLists ={};
-        var promises = usernames.map( async (us) =>{
-          await  db.collection("users").doc(props.adminId).collection("users").doc(us).collection("countries").get().then((countries)=>{
-                countries.forEach((country)=>{
-                    let data = country.data();
-                    let total_score = data.factor + data.costume + data.show + data.performance +data.song
-                    if(resultsLists[data.name]){
-                        resultsLists[data.name] = resultsLists[data.name] + total_score
-                    }
-                    else{
-                        resultsLists[data.name] = total_score;
-                    }
-                })
-            })
-        })
-        await Promise.all(promises);
-       // console.log(JSON.stringify(resultsLists));
+    const getResults = () =>{
+        
+        var resultLists = {};
+        for (const [user, countries] of Object.entries(props.results)){
+            for (const [country, score] of Object.entries(countries)){
+                if (resultLists[country]) {
+                    resultLists[country] += score;
+                } else {
+                    resultLists[country] = score;
+                }
+            }
+        }
+
         let resultJSX =[];
-        var resultlist = Object.keys(resultsLists).map((key)=>{
-            return [key, resultsLists[key]]
+        var resultlist = Object.keys(resultLists).map((key)=>{
+            return [key, resultLists[key]]
         })
         resultlist.sort(function(first, second) {
             return second[1] - first[1];
         });
         resultlist.forEach((cou)=>{
             var flag = "";
-            if (flags) {
-                flag = flags[cou[0].toLowerCase()];
+            if (props.flags[cou[0].toLowerCase()]) {
+                flag = props.flags[cou[0].toLowerCase()];
             };
             resultJSX.push(
                 <div key={cou[0]} className="result_list_row">
@@ -100,14 +99,15 @@ function Overlay(props) {
             )
         })
         setResultList(resultJSX);
-        return resultsLists;
+        return resultLists;
        
     }
 
 
     useEffect(()=> {
-        getResults()
-    },[newResults])
+        getResults();
+
+    },[props.results, props.flags])
 
     return(
         <div>
@@ -135,7 +135,7 @@ function Overlay(props) {
                     </div> : null}
                     {showUsers ? <div className="users_list_box"> 
                         Brukere: <br/>
-                        {users}
+                        {props.users}
                     </div> : null}
 
             </div>

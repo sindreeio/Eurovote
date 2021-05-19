@@ -9,35 +9,44 @@ import NormalButton from '../../components/buttons/normalButton.js';
 function ResultPage(props) {
     var uid = useUserId();
     var flags = useFlags(uid);
-    var {users, usernames, newResults} = useUsers(uid, flags)
     const [resultList, setResultList] = useState("(Ingen stemmer gitt)");
 
     
     const getResults = async () =>{
         let resultsLists ={};
-        var promises = usernames.map( async (us) =>{
-            await  db.collection("users").doc(uid).collection("users").doc(us).collection("countries").get().then((countries)=>{
-                countries.forEach((country)=>{
-                    let data = country.data();
-                    
-                    let total_score = [data.factor , data.costume , data.show , data.performance ,data.song]
-                    if(resultsLists[data.name]){
-                        for (var score in total_score) {
-                            resultsLists[data.name][score] = resultsLists[data.name][score] + total_score[score]    
-                        }
-                    }
-                    else{
-                        resultsLists[data.name]= total_score
-                    }
+        console.log(uid);
+        let usernames = [];
+        await db.collection("users").doc(uid).collection("users").get().then(async (users) => {
+               users.forEach( async (user) => {
+                    usernames.push(user.id);
                 })
             })
-        })
+        console.log(usernames);
+        var promises = usernames.map( async (us) =>{
+            await db.collection("users").doc(uid).collection("users").doc(us).collection("countries").get().then((countries)=>{
+                    countries.forEach((country)=>{
+                        let data = country.data();
+                    
+                        let total_score = [data.factor , data.costume , data.show , data.performance ,data.song]
+                        if(resultsLists[data.name]){
+                            for (var score in total_score) {
+                                resultsLists[data.name][score] = resultsLists[data.name][score] + total_score[score]    
+                            }
+                        }
+                        else{
+                            resultsLists[data.name]= total_score
+                        }
+                    })
+                })
+            })
         await Promise.all(promises);
+        console.log(resultsLists)
         //console.log(JSON.stringify(resultsLists));
         let resultTables = [];
         var resultlist = Object.keys(resultsLists).map((key)=>{
             return [key, resultsLists[key]]
         })
+        console.log(resultlist)
         const categories = ["Eurovisionfaktor", "Kostyme", "Sceneshow", "Framføring", "Sang", "Totalt"]
         for (var cat in categories) {
             let resultJSX = [<div className="result_page_category">{categories[cat]}</div>];
@@ -58,7 +67,7 @@ function ResultPage(props) {
             // eslint-disable-next-line no-loop-func
             resultlist.forEach((cou)=>{
                 var flag = "";
-                if (flags) {
+                if (flags[cou[0].toLowerCase()]) {
                     flag = flags[cou[0].toLowerCase()];
                 };
                 resultJSX.push(
@@ -76,11 +85,11 @@ function ResultPage(props) {
       
    }
     useEffect(()=> {
-        if(uid && usernames.length !== 0) {
+        if(uid) {
             getResults()
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [usernames.length])
+    }, [uid])
 
     return(
         <div className="result_page_container">
