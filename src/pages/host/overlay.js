@@ -27,7 +27,6 @@ function Overlay(props) {
 
     const changeVotingStatus = () =>{
         let status;
-        console.log("VOTINGSTATUS")
         db.collection("users").doc(props.adminId).get().then((doc)=>{
             status = doc.data().canVote
         })
@@ -51,12 +50,10 @@ function Overlay(props) {
     }
 
     useEffect(() =>{
-        console.log("GAMECODE")
         db.collection("users").doc(props.adminId).update({"usersCanJoin":showGameCode})
     }, [showGameCode])
     
     useEffect(()=>{
-        console.log("ACTVIEVOTING")
         db.collection("users").doc(props.adminId).get().then((doc)=>{
             if (doc.data()) {
                 setActiveVoting(doc.data().canVote)
