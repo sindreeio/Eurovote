@@ -7,13 +7,16 @@ export const useGameCode = (adminId) =>{
     const [gameCode,setGameCode] = useState(false);
 
     useEffect(() => {
-        db.collection("users").doc(adminId).get().then((doc) => {
-            if (doc.data()) {
-                setGameCode(doc.data().pin);
-            }
-        })
-    }, [adminId])
+        setTimeout(() => {
+            db.collection("users").doc(adminId).get().then((doc) => {
+                if (doc.data()) {
+                    setGameCode(doc.data().pin);
+                }
+            })
+       
+        }, 1000);
 
+    }, [adminId])
     return gameCode;
 };
 
