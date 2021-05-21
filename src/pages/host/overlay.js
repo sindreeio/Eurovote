@@ -99,7 +99,45 @@ function Overlay(props) {
         return resultLists;
        
     }
+    
+    const deleteGame = () =>{
+        if (window.confirm("Er du sikker på at du vil slette spillet?")) {
 
+            const usersRef = db.collection("users").doc(props.adminId).collection("users");
+            usersRef.get().then((users) =>{
+                users.forEach((user) =>{
+                    const countriesRef = usersRef.doc(user.id).collection("countries");
+                    countriesRef.get().then((countries) =>{
+                        countries.forEach((country)=>{
+                            countriesRef.doc(country.id).delete()
+                        })
+                    })
+                    usersRef.doc(user.id).delete();
+                }   
+                )
+            })
+            
+            try{
+                let current_pin = null;
+                db.collection("pin").doc("current_pin").get().then((doc)=>{
+                    if(doc.exists){
+                        current_pin = doc.data().current_pin
+                    }
+                    else{
+                        console.log("no pin found");
+                    }
+                }).then(()=>{
+                    db.collection('users').doc(props.adminId).set({ pin:current_pin, "canVote": false, "usersCanJoin": true, "started": false});
+                    db.collection("pin").doc("current_pin").set({current_pin: (current_pin + Math.floor(Math.random()*100))});
+                }
+                )
+            }
+            catch{
+                console.log("error")
+            }
+        }
+
+    }
 
     useEffect(()=> {
         getResults();
@@ -121,6 +159,9 @@ function Overlay(props) {
                         <Link to={'/results'}>
                             <NormalButton name="Gå til resultater"></NormalButton>
                         </Link>
+                </div>
+                <div className="top_menu_box">
+                        <NormalButton name="Slett spill/Start nytt" action={deleteGame}></NormalButton>
                 </div>
                 <div className="top_menu_box">
                         <NormalButton name="Logg ut" action={logOut}></NormalButton>
